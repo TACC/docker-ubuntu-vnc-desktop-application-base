@@ -52,7 +52,8 @@ extra-clean:
 	docker image prune -f
 
 prep:
-	if [ -d "../$(INCLUDES)" ]; then cp -r $(INCLUDES)/* .; fi
+	git submodule update
+	if [ -d "$(INCLUDES)" ]; then cp -r $(INCLUDES)/* .; fi
 	if [ -d "app.yml" ]; then cat app.yml >> flavors/$(FLAVOR).yml && rm app.yml; fi
 
 # Run jinja2cli to parse Jinja template applying rules defined in the flavors definitions
