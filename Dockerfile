@@ -101,46 +101,8 @@ RUN cd /src/web \
 # merge
 ################################################################################
 FROM system
-# LABEL maintainer="fcwu.tw@gmail.com"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
-
-# Install STKO
-
-
-RUN apt update \ 
-    && apt upgrade -y \
-    && apt install build-essential -y
-
-RUN apt update \
-    && apt install -y \
-    python3-dev \
-    tcl8.6-dev \
-    tk8.6-dev \ 
-    libtogl-dev \
-    libglu1-mesa-dev \
-    freeglut3-dev \
-    mesa-common-dev \
-    mesa-utils \
-    libxi-dev \
-    libxmu-dev \
-    xterm 
-
-RUN apt update \
-    && apt install -y \
-    libxkbcommon-x11-0
-
-# Add stko executable
-ADD STKO-Install /STKO-Install
-# Use/overwrite script so that it uses qt libs that will be installed by online installer
-COPY STKO.sh /STKO-Install/STKO.sh
-
-# Install qt 5.12.4 using online installer
-COPY qt_install_utils/ /qt_temp
-ADD http://download.qt.io/official_releases/qt/5.12/5.12.4/qt-opensource-linux-x64-5.12.4.run /qt_temp/qt-opensource-linux-x64-5.12.4.run
-RUN chmod +x /qt_temp/qt-opensource-linux-x64-5.12.4.run
-RUN /qt_temp/qt-opensource-linux-x64-5.12.4.run --script /qt_temp/qt-installer.qs -platform minimal
-RUN rm -rf /qt_temp
 
 COPY image /
 EXPOSE 6080
@@ -152,8 +114,11 @@ RUN groupadd --gid 816877 G-816877
 RUN useradd --uid 458981 --create-home --shell /bin/bash --user-group --groups G-816877,adm,sudo ubuntu && chown ubuntu:G-816877 /home/ubuntu
 RUN usermod -g G-816877 ubuntu
 RUN mkdir -p /home/ubuntu/.config/pcmanfm/LXDE/ && cp /usr/local/share/doro-lxde-wallpapers/desktop-items-0.conf /home/ubuntu/.config/pcmanfm/LXDE/ && chown -R ubuntu:G-816877 /home/ubuntu/.config
+
+RUN apt update \
+    && apt install -y \
+    xterm
+
 COPY kill.py /
-# COPY /etc/pki/tls/certs/designsafe-exec-01.tacc.utexas.edu.cer /etc/nginx/ssl/
-# COPY /etc/pki/tls/private/designsafe-exec-01.tacc.utexas.edu.key /etc/nginx/ssl/
-# HEALTHCHECK --interval=30s --timeout=5s CMD curl --fail http://127.0.0.1:6079/api/health
+COPY application.sh /
 ENTRYPOINT ["/startup.sh"]
