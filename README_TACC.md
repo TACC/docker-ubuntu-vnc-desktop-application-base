@@ -9,7 +9,7 @@ Base docker image (HTML5 VNC interface to access Ubuntu 16.04 LXDE desktop envir
 Build base image
 -------------------------
 
-docker build -t taccaci/docker-ubuntu-vnc-desktop_application_base:latest .
+docker build -t taccaci/docker-ubuntu-vnc-desktop-application-base:latest .
 
 Run docker container on designsafe-exec-01
 --------------------------------
