@@ -1,1 +1,0 @@
-/STKO-Install/STKO.sh
