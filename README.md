@@ -1,20 +1,20 @@
 docker-ubuntu-vnc-desktop-application-base
 =========================
 
-Base docker image (HTML5 VNC interface to access Ubuntu 16.04 LXDE desktop environment) for applications.
+Base docker image (HTML5 VNC interface to access Ubuntu 16.04 LXDE desktop environment) for applications. This image is used by interactive/gui applications.  Details on how to use this image to create an appliation can be found in [below](#use-base-image-to-create-an-application).
+
 
 Fork of https://github.com/fcwu/docker-ubuntu-vnc-desktop
 (see [that readme file ](README_original.md) for general information)
 
-Build base image
--------------------------
+
+### Build base image
 
 docker build -t taccaci/docker-ubuntu-vnc-desktop-application-base:latest .
 
-Run docker container on designsafe-exec-01
---------------------------------
+### Run docker container on designsafe-exec-01
 
-Run the docker container and access with https://designsafe-exec-01.tacc.utexas.edu:$port/#/ 
+Run the docker container and access with https://designsafe-exec-01.tacc.utexas.edu:$port/#/
 (note comand has env variables: port, AGAVE_JOB_OWNER
 
 ```
@@ -22,9 +22,24 @@ docker run -i --rm -p $port:6080 -e SSL_PORT=6080 -v "/corral-repl/tacc/NHERI/sh
 docker run -p 6080:80 -v /dev/shm:/dev/shm dorowu/ubuntu-desktop-lxde-vnc
 ```
 
-DISPLAY_SCREEN_DEPTH (i.e.`-e DISPLAY_SCREEN_DEPTH=24`) can be used to change the color depth which defaults to 16
-Browse http://127.0.0.1:6080/
+### Screen depth
 
-Dockerhub
----------
+DISPLAY_SCREEN_DEPTH (i.e.`-e DISPLAY_SCREEN_DEPTH=24`) can be used to change the color depth which defaults to 16
+
+### Dockerhub
+
 https://hub.docker.com/r/taccaci/docker-ubuntu-vnc-desktop-application-base
+
+## Use base image to create an application
+[1] The base image supervisord configuration is confiured so that it starts `/applcations.sh`. In the base image, this script file just contains `xterm` so that is what starts when you run the base image.
+
+To create an app using this base image, just create a container where your application is installed and replace `/application.sh` with a call to your application:
+
+```
+FROM taccaci/docker-ubuntu-vnc-desktop-application-base:TAG
+
+# Install your app dependencies and app
+
+# Replace application script with script running your application
+COPY application.sh /
+```
