@@ -1,10 +1,10 @@
 docker-ubuntu-vnc-desktop
 =========================
 
-Fork of https://github.com/fcwu/docker-ubuntu-vnc-desktop
-(see [that readme file ](README.md))
+Base docker image (HTML5 VNC interface to access Ubuntu 16.04 LXDE desktop environment) for applications.
 
-Base docker image (HTML5 VNC interface to access Ubuntu 16.04 LXDE desktop environment) for applications
+Fork of https://github.com/fcwu/docker-ubuntu-vnc-desktop
+(see [that readme file ](README.md) for general information)
 
 Build base image
 -------------------------
@@ -24,3 +24,7 @@ docker run -p 6080:80 -v /dev/shm:/dev/shm dorowu/ubuntu-desktop-lxde-vnc
 
 DISPLAY_SCREEN_DEPTH (i.e.`-e DISPLAY_SCREEN_DEPTH=24`) can be used to change the color depth which defaults to 16
 Browse http://127.0.0.1:6080/
+
+Dockerhub
+---------
+https://hub.docker.com/r/taccaci/docker-ubuntu-vnc-desktop-application-base
